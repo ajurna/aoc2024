@@ -22,9 +22,8 @@ def part2(data):
         col_1.append(int(a))
         col_2.append(int(b))
     total = 0
-    counts = {}
     for item in col_1:
-        total += item * counts.get(item, col_2.count(item))
+        total += item * col_2.count(item)
     print(total)
 
 if __name__ == '__main__':

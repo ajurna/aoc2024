@@ -1,4 +1,3 @@
-from itertools import combinations
 from typing import List, NamedTuple
 from rich.console import Console
 
