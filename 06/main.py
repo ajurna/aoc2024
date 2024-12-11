@@ -1,6 +1,5 @@
 from typing import List, NamedTuple
 from itertools import cycle
-from unittest import case
 
 
 class Point(NamedTuple):
@@ -23,7 +22,6 @@ def part1(area: List[str]):
             location = Point(line.index('^'), i)
     current_direction = next(direction_cycle)
     visited = set()
-    # visited.add(location)
     y_max = len(area)-1
     x_max = len(area[0])-1
     while 0 <= location.x < x_max and 0 <= location.y < y_max:
@@ -41,7 +39,7 @@ def part1(area: List[str]):
                 current_direction = next(direction_cycle)
                 next_location = location + current_direction
                 location = next_location
-    return len(visited), visited
+    return len(visited)
 
 def next_stop(location: Move, area) -> Move:
     match location.direction:
@@ -60,21 +58,18 @@ def next_stop(location: Move, area) -> Move:
 
 def is_cycle(location, area):
     visited = set()
-    ordered_visited = []
     try:
         while True:
             new_location = next_stop(location, area)
             if new_location in visited:
                 return True
             visited.add(new_location)
-            ordered_visited.append(new_location)
             location = new_location
     except ValueError:
         return False
 
-def part2(area: List[str], vis):
+def part2(area: List[str]):
     area = [list(line) for line in area]
-    direction_cycle = cycle([Point(0, -1), Point(1, 0), Point(0, 1), Point(-1, 0)])
     directions = cycle(["N", "E", "S", "W"])
     direction_point = {
         'N': Point(0, -1),
@@ -91,34 +86,27 @@ def part2(area: List[str], vis):
     for i, line in enumerate(area):
         if '^' in line:
             location = Move(Point(line.index('^'), i), 'N')
-    current_direction = next(directions)
     valid_blocks = set()
+    invalid_blocks = set()
     y_max = len(area) - 1
     x_max = len(area[0])- 1
-    start = location.l
     while 0 <= location.l.x < x_max and 0 <= location.l.y < y_max:
         next_location = Move(location.l + direction_point[location.direction], location.direction)
-        # print(location)
         if area[next_location.l.y][next_location.l.x] == '#':
             location = Move(location.l, next_direction[location.direction])
             continue
-        # if next_location.l == start:
-        #     location = next_location
-        #     continue
         area[next_location.l.y][next_location.l.x] = '#'
-        if is_cycle(location, area):
+        if next_location.l not in invalid_blocks and is_cycle(location, area):
             valid_blocks.add(next_location.l)
+        else:
+            invalid_blocks.add(next_location.l)
         area[next_location.l.y][next_location.l.x] = '.'
         location = next_location
 
-    # for line in area:
-    #     print(''.join(line))
-    print(len(valid_blocks), start in valid_blocks)
     return len(valid_blocks)
 
 if __name__ == '__main__':
     with open("input") as f:
         lines = [line.strip() for line in f.readlines()]
-    p1, vis = part1(lines)
-    print(f"Part 1: {p1}")
-    print(f"Part 2: {part2(lines, vis)}")
+    print(f"Part 1: {part1(lines)}")
+    print(f"Part 2: {part2(lines)}")
