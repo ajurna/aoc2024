@@ -189,10 +189,6 @@ def part2(lines: List[str]):
         box_index[box.left] = box
         box_index[box.right] = box
     for i, direction in enumerate(steps):
-        # if i == 89:
-        #     print(i)
-        # draw_area2(walls, boxes, robot)
-        # print(direction, i)
         next_step = robot.step(direction)
         if next_step in walls:
             continue
@@ -205,7 +201,6 @@ def part2(lines: List[str]):
                     box_index[box.right] = box
             continue
         robot = next_step
-    draw_area2(walls, boxes, robot)
     total = 0
     for box in boxes:
         total += box.left.x + box.left.y*100
