@@ -68,16 +68,16 @@ def part1(area: List[str]):
     while queue:
         item = queue.get()
         if item.position in ends:
-            key = {
-                Direction.NORTH: "^",
-                Direction.SOUTH: "v",
-                Direction.EAST: ">",
-                Direction.WEST: "<",
-            }
-            for p in item.path:
-                area[p.y][p.x] = key[p.direction]
-            for line in area:
-                print("".join(line))
+            # key = {
+            #     Direction.NORTH: "^",
+            #     Direction.SOUTH: "v",
+            #     Direction.EAST: ">",
+            #     Direction.WEST: "<",
+            # }
+            # for p in item.path:
+            #     area[p.y][p.x] = key[p.direction]
+            # for line in area:
+            #     print("".join(line))
             return item.score
         for direction in Direction.turns(item.position.direction):
             next_position = item.position.turn(direction)
